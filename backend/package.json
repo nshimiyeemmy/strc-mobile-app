@@ -1,0 +1,21 @@
+{
+  "name": "strc_backend",
+  "version": "1.0.0",
+  "description": "this is a backend part for our latest strc mobile app",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.0",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "emmy",
+  "license": "ISC"
+}
