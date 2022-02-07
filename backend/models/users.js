@@ -27,30 +27,26 @@ const userSchema = new mongoose.Schema({
     minlength: [10, 'Your bio should not be less than 10 characters'],
     maxlength: [50, 'Your bio should not be more than 50 character'],
   },
-  password: {
+  hashedPassword: {
     type: String,
     required: [true, 'Please enter your Password'],
     minlength: [6, 'Your password must be more than 6 characters'],
     select: false,
   },
-  avatar: {
-      //since I will use online cloud storage for images, I will need to store url for img
-    public_id: {
-      type: String,
-      required: true,
-    },
-    url: {
-      type: String,
-      required: true,
-    },
-  },
-  role: {
-    type: String,
-    default: 'member',
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,
     default: Date.now(),
   },
 });
-module.exports = mongoose.model('Users', userSchema);
+userSchema.virtual('id').get(function(){
+    return this._id.toHexString();
+})
+
+userSchema.set('toJSON',{
+    virtuals:true,
+})
+module.exports =  mongoose.model('Users', userSchema);
