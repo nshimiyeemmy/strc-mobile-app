@@ -1,11 +1,29 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+const app = require('./app');
+const connectToDatabase = require('./config/database');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+require('dotenv').config({ path: './config/config.env' });
+
+//Handling the Uncaught exceptions on the server
+process.on('uncaughtException', (err) => {
+  console.log(`ERROR:${err.message}`);
+  console.log('Shutting down due to uncaught Exceptions');
+  process.exit(1);
 });
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+//connecting to mongoDB database
+connectToDatabase();
+
+const server = app.listen(process.env.PORT, () => {
+  console.log(
+    `server started on PORT ${process.env.PORT}`
+  );
+});
+
+//Handling unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+  console.log(`ERROR: ${err.message}`);
+  console.log('Shutting down the server due to UnHandled promise rejection');
+  server.close(() => {
+    process.exit(1);
+  });
 });
