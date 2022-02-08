@@ -10,13 +10,32 @@ const bcrypt = require('bcryptjs');
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     let user = new User ({ 
         firstname:req.body.firstname,
-         lastname:req.body.lastname,
+        lastname:req.body.lastname,
         email:req.body.email, 
         hashedPassword: bcrypt.hashSync(req.body.password,10),
         bio:req.body.bio, 
-        isAdmin:req.body.isAdmin})
-    if(!user)
-     return res.status(200).send('user cannot be created');  
-     res.send(user);
+        isAdmin:req.body.isAdmin
+    })
+    user = await user.save();
+      res.status(200).json({
+        success: true,
+        User: user,
+      });
+    });
+
+  //Admin routes
+//Get all Users  => /api/v1/admin/users
+exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
+    const users = await User.find();
+    if (!users || users.length<=0) {
+        return next(
+          new ErrorHandler(`No users found`, 400)
+        );
+      }
+    res.status(200).json({
+      success: true,
+      Users: users,
+    });
+
   });
   
