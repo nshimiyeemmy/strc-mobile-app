@@ -41,7 +41,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   //Admin routes
 //Get all Users  => /api/v1/admin/users
 exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
-    const users = await User.find();
+    const users = await User.find().select('-hashedPassword');
     if (!users || users.length<=0) {
         return next(
           new ErrorHandler(`No users found`, 400)
