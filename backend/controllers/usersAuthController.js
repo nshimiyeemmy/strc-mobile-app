@@ -23,6 +23,21 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       });
     });
 
+        //Get user details  => /api/v1/admin/user/:id
+exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next(
+      new ErrorHandler(`User not found with id ${req.params.id}`, 400)
+    );
+  }
+  res.status(200).json({
+    success: true,
+    User: user,
+  });
+});
+
+
   //Admin routes
 //Get all Users  => /api/v1/admin/users
 exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
